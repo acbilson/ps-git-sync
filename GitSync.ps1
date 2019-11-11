@@ -15,11 +15,13 @@
 	[string]$BaseDirectory="C:\AIM\Trunk\Products\RAD"
 )
 
+$executionDirectory = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
+
 # Commands run at the root level
 $globalActions = @("Clean")
 if ($globalActions.Contains($Action)) {
 
-	./GitClean.ps1 -BaseDirectory $BaseDirectory
+	& "$executionDirectory\GitClean.ps1" -BaseDirectory $BaseDirectory
 	return
 }
 

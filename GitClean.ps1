@@ -6,7 +6,8 @@ param (
 # Sets a spacing width for console output
 $consoleWidth = $Host.UI.RawUI.WindowSize.Width / 3
 
-$dataPath = [System.IO.Path]::Combine((pwd | select -Expand Path), "clean.csv")
+$executionDirectory = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
+$dataPath = [System.IO.Path]::Combine($executionDirectory, "clean.csv")
 
 if ([System.IO.File]::Exists($dataPath) -eq $false) 
 {
@@ -15,7 +16,7 @@ if ([System.IO.File]::Exists($dataPath) -eq $false)
 }
 
 # Reads cleaning data from CSV
-$data = Import-CSV ./clean.csv | group -Property BaseFolder
+$data = Import-CSV $dataPath | group -Property BaseFolder
 
 # Moves to the base directory for all Git repos	
 Push-Location $BaseDirectory
