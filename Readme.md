@@ -4,9 +4,7 @@ A set of PowerShell scripts that allow a Git user to manage many interconnected 
 
 # Installation
 
-Place this readme, the GitSync.ps1 and GitClean.ps1 PowerShell scripts, and the clean.csv configuration CSV in the root AIM folder. GitClean.ps1 is called by GitSync.ps1, so you can just use the one script for all functionality.
-
-`C:\AIM\Trunk\Products\RAD`
+Place this readme, the GitSync.ps1 and GitClean.ps1 PowerShell scripts, and the clean.csv configuration CSV in your root folder. GitClean.ps1 is called by GitSync.ps1, so you can just use the one script for all functionality.
 
 To further simplify, you can create an alias for GitSync and add it to your PowerShell profile. Just be aware that the alias will only work at the root directory (it'd take a little more to make it global).
 

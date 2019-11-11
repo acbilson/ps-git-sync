@@ -19,7 +19,7 @@
 $globalActions = @("Clean")
 if ($globalActions.Contains($Action)) {
 
-	./GitClean.ps1
+	./GitClean.ps1 -BaseDirectory $BaseDirectory
 	return
 }
 

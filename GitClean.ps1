@@ -1,6 +1,6 @@
 param (
 	[Parameter(Mandatory=$false)]
-	[string]$BaseDirectory="C:\AIM\Trunk\Products\RAD"
+	[string]$BaseDirectory=""
 )
 
 # Sets a spacing width for console output
