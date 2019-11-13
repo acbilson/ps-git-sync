@@ -1,7 +1,7 @@
 ﻿param(
     [Parameter(Mandatory=$true,Position=0)]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("Status", "Pull", "Branch", "Fetch", "Branches", "Checkout", "Clean", "Script")]
+    [ValidateSet("status", "pull", "branch", "fetch", "branches", "checkout", "clean", "script")]
     [String]$Action,
 	
 	[Parameter(Mandatory=$false)]
@@ -18,7 +18,7 @@
 $executionDirectory = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
 
 # Commands run at the root level
-$globalActions = @("Clean")
+$globalActions = @("clean")
 if ($globalActions.Contains($Action)) {
 
 	& "$executionDirectory\GitClean.ps1" -BaseDirectory $BaseDirectory
@@ -26,17 +26,17 @@ if ($globalActions.Contains($Action)) {
 }
 
 # Error checks to ensure branch is selected when certain actions are requested
-if ($Action -eq "Pull" -and $Branch -eq "") { 
+if ($Action -eq "pull" -and $Branch -eq "") { 
 	Write-Host -ForegroundColor Red "Must select a branch to pull across repositories."
 	return
 	}
 
-if ($Action -eq "Checkout" -and $Branch -eq "") { 
+if ($Action -eq "checkout" -and $Branch -eq "") { 
 	Write-Host -ForegroundColor Red "Must select a branch to checkout across repositories."
 	return
 	}
 
-if ($Action -eq "Script" -and $Script.ToString() -eq "") {
+if ($Action -eq "script" -and $Script.ToString() -eq "") {
 	Write-Host -ForegroundColor Red "Must supply a script block to run a script across repositories."
 	return
 	}
@@ -64,7 +64,7 @@ foreach ($directory in $directories) {
     # Note: Add new actions to ValidateSet in param
     switch ($Action) {
 
-        "Status" {
+        "status" {
 
             $status = git status --porcelain
 			$status | % {
@@ -73,7 +73,7 @@ foreach ($directory in $directories) {
 				}
         }
 		
-		"Fetch" {
+		"fetch" {
 		
 			$fetch = git fetch 2>&1
 			[regex]$regex = '\[.*>\s[^\s]+'
@@ -83,7 +83,7 @@ foreach ($directory in $directories) {
 		
 		}
 		
-		"Pull" {
+		"pull" {
 		
 			$currentBranch = git branch --show-current
 			git checkout $Branch
@@ -91,7 +91,7 @@ foreach ($directory in $directories) {
 			git checkout $currentBranch
 		}
 		
-		"Checkout" {
+		"checkout" {
 		
 			if ((git branch --show-current) -match $Branch) {
 				git checkout $Branch
@@ -99,13 +99,13 @@ foreach ($directory in $directories) {
 			{ Write-Host -ForegroundColor Red "skipped repo because ${Branch} does not exist" }
 		}
 		
-		"Branch" {
+		"branch" {
 		
 			$temp = git branch | sls \*
 			Write-Host -ForegroundColor Cyan $temp
 		}
 		
-		"Branches" {
+		"branches" {
 		
 			$branches = git branch -r
 			$branches |	sls '[Ff]eature\/abilson' | % { Write-Host -ForegroundColor Cyan $_ }
@@ -115,7 +115,7 @@ foreach ($directory in $directories) {
 			$branches |	sls 'coc' | % { Write-Host -ForegroundColor White $_ }
 		}
 		
-		"Script" {
+		"script" {
 		
 			$Script.Invoke()
 		}
