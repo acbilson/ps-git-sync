@@ -54,7 +54,7 @@ foreach ($folder in $data) {
 				}
 			} else {
 			
-				Write-Host -ForegroundColor Yellow "Skipping: path did not exist:" $row.RelativePath
+				Write-Host -ForegroundColor DarkGray "Skipping: path did not exist:" $row.RelativePath
 			}
 		}
     }
