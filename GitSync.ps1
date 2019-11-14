@@ -107,12 +107,18 @@ foreach ($directory in $directories) {
 		
 		"branches" {
 		
-			$branches = git branch -r
-			$branches |	sls '[Ff]eature\/abilson' | % { Write-Host -ForegroundColor Cyan $_ }
-			$branches |	sls '[Ff]eature\/kosky' | % { Write-Host -ForegroundColor Yellow $_ }
-			$branches |	sls '[Ff]eature\/KA\/' | % { Write-Host -ForegroundColor Gray $_ }
-			$branches |	sls '[Ff]eature\/kasarda' | % { Write-Host -ForegroundColor Magenta $_ }
-			$branches |	sls 'coc' | % { Write-Host -ForegroundColor White $_ }
+			$allBranches = git branch -r | sort
+			$myBranches =      $allBranches | sls '[Ff]eature\/abilson'
+			$koskyBranches =   $allBranches | sls '[Ff]eature\/kosky'
+			$ahmedBranches =   $allBranches | sls '[Ff]eature\/KA\/'
+			$kasardaBranches = $allBranches | sls '[Ff]eature\/kasarda'
+			$cocBranches =     $allBranches | sls 'coc' | sls -NotMatch 'abilson|kosky|kasarda|\/KA\/' 
+
+			$myBranches      | % { Write-Host -ForegroundColor Yellow $_ }
+			$koskyBranches   | % { Write-Host -ForegroundColor Cyan $_ }
+			$ahmedBranches   | % { Write-Host -ForegroundColor Blue $_ }
+			$kasardaBranches | % { Write-Host -ForegroundColor Magenta $_ }
+			$cocBranches     | % { Write-Host -ForegroundColor White $_ }
 		}
 		
 		"script" {
