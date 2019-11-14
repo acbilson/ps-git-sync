@@ -86,9 +86,9 @@ foreach ($directory in $directories) {
 		"pull" {
 		
 			$currentBranch = git branch --show-current
-			git checkout $Branch
+			if ($Branch -ne $currentBranch) { git checkout $Branch }
 			git pull origin $Branch
-			git checkout $currentBranch
+			if ($Branch -ne $currentBranch) { git checkout $currentBranch }
 		}
 		
 		"checkout" {
