@@ -100,8 +100,7 @@ foreach ($directory in $directories) {
 		
 		"branch" {
 		
-			$temp = git branch | sls \*
-			Write-Host -ForegroundColor Cyan $temp
+			Write-Host -ForegroundColor Cyan ' '(git branch --show-current)
 		}
 		
 		"branches" {
