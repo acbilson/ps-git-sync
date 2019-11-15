@@ -7,6 +7,11 @@ param (
 $consoleWidth = $Host.UI.RawUI.WindowSize.Width / 3
 
 $executionDirectory = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
+
+# Loads functions from utility script
+. "$executionDirectory\GitUtil.ps1"
+
+# Sets path to cleaning data file
 $dataPath = [System.IO.Path]::Combine($executionDirectory, "clean.csv")
 
 if ([System.IO.File]::Exists($dataPath) -eq $false) 
@@ -26,8 +31,7 @@ foreach ($folder in $data) {
     # Moves to the subfolder to do work in
     Push-Location $folder.Name
 
-    Write-Host -ForegroundColor DarkGray $('#' * $consoleWidth)
-	Write-Host -ForegroundColor Cyan "Cleaning Repository:" $folder.Name
+    Print-Header -Header $folder.Name
 
     foreach($row in $folder.Group) {
 
@@ -61,7 +65,7 @@ foreach ($folder in $data) {
 
     # restores auto-updated version files to avoid accidental commit of new versions
 	# which would cause merge conflicts
-	Write-Host -ForegroundColor Cyan "Restoring assembly version files..."
+	Write-Host -ForegroundColor DarkCyan "Restoring assembly version files..."
 	git restore *version.txt
 	git restore *Assembly*.cs
 

@@ -17,6 +17,9 @@
 
 $executionDirectory = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
 
+# Loads functions from utility script
+. "$executionDirectory\GitUtil.ps1"
+
 # Commands run at the root level
 $globalActions = @("clean")
 if ($globalActions.Contains($Action)) {
@@ -47,18 +50,14 @@ Set-Location $BaseDirectory
 # Adds root to location stack to return here when complete
 Push-Location
 
-# Sets a spacing width for console output
-$consoleWidth = $Host.UI.RawUI.WindowSize.Width / 3
-
 # Filters only directories that are Git repos
 $directories = Get-ChildItem -Directory | Where-Object { [System.IO.Directory]::Exists($_.FullName + '\.git\') -eq $true }
 
 foreach ($directory in $directories) {
 
-    # Header to print per directory
     Set-Location $directory.FullName
-    Write-Host -ForegroundColor DarkGray $('#' * $consoleWidth)
-    Write-Host -ForegroundColor DarkGreen ' ' $directory.Name.ToUpper()
+	
+	Print-Header -Header $directory.Name
 
     # Git actions to take per directory
     # Note: Add new actions to ValidateSet in param
