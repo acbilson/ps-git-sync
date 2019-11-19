@@ -4,13 +4,16 @@
     [ValidateSet("status", "pull", "branch", "fetch", "branches", "checkout", "clean", "script")]
     [String]$Action,
 	
+	[Alias('b')]
 	[Parameter(Mandatory=$false)]
 	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc")]
 	[String]$Branch = "",
 	
+	[Alias('s')]
 	[Parameter(Mandatory=$false)]
 	[scriptblock]$Script = {},
 	
+	[Alias('h')]
 	[Parameter(Mandatory=$false)]
 	[string]$BaseDirectory="C:\AIM\Trunk\Products\RAD"
 )
@@ -93,9 +96,16 @@ foreach ($directory in $directories) {
 		"checkout" {
 		
 			if ((git branch --show-current) -match $Branch) {
-				git checkout $Branch
-			} else
-			{ Write-Host -ForegroundColor Red "skipped repo because ${Branch} does not exist" }
+				Write-Host -ForegroundColor DarkCyan "already on ${Branch} branch"
+			} else {
+				
+				$hasBranch = $false
+				git branch | % { if (($_ -like "*${Branch}")) { $hasBranch = $true } }
+				
+				if ($hasBranch) {
+					git checkout $Branch
+				}
+			}
 		}
 		
 		"branch" {
