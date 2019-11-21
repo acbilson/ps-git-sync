@@ -47,11 +47,8 @@ if ($Action -eq "script" -and $Script.ToString() -eq "") {
 	return
 	}
 
-# Navigates to the base path if not already there
-Set-Location $BaseDirectory
-
-# Adds root to location stack to return here when complete
-Push-Location
+# Adds root to the path stack so we can get back to the directory from which the command ran
+Push-Location $BaseDirectory
 
 # Filters only directories that are Git repos
 $directories = Get-ChildItem -Directory | Where-Object { [System.IO.Directory]::Exists($_.FullName + '\.git\') -eq $true }

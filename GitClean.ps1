@@ -73,3 +73,6 @@ foreach ($folder in $data) {
 
     Pop-Location
 }
+
+# returns to original directory
+Pop-Location
