@@ -6,7 +6,7 @@
 	
 	[Alias('b')]
 	[Parameter(Mandatory=$false)]
-	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc")]
+	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc", "feature/abilson/imasis_migration")]
 	[String]$Branch = "",
 	
 	[Alias('s')]
@@ -15,21 +15,16 @@
 	
 	[Alias('h')]
 	[Parameter(Mandatory=$false)]
-	[string]$BaseDirectory="C:\AIM\Trunk\Products\RAD"
+	[string]$BaseDirectory="C:\AIM\Trunk\Products\RAD",
+	
+	[Parameter(Mandatory=$false)]
+	[switch]$hard
 )
 
 $executionDirectory = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
 
 # Loads functions from utility script
 . "$executionDirectory\GitUtil.ps1"
-
-# Commands run at the root level
-$globalActions = @("clean")
-if ($globalActions.Contains($Action)) {
-
-	& "$executionDirectory\GitClean.ps1" -BaseDirectory $BaseDirectory
-	return
-}
 
 # Error checks to ensure branch is selected when certain actions are requested
 if ($Action -eq "pull" -and $Branch -eq "") { 
@@ -124,6 +119,21 @@ foreach ($directory in $directories) {
 			$ahmedBranches   | % { Write-Host -ForegroundColor Blue $_ }
 			$kasardaBranches | % { Write-Host -ForegroundColor Magenta $_ }
 			$cocBranches     | % { Write-Host -ForegroundColor White $_ }
+		}
+		
+		"clean" {
+		
+			# removes all untracked files and directories (not counting ignored files and directories)
+			Write-Host -ForegroundColor Cyan "Removing untracked files and directories (not counting ignored files and directories..."
+			$cleaned = git clean -df
+			$cleaned | % { Write-Host -ForegroundColor DarkCyan $_ }
+			
+			# resets assembly version updates from build
+			# 2>&1 - sends stderr to stdout so it can be captured in the terminal
+			# > $null - sends error to empty buffer so it doesn't appear.
+			Write-Host -ForegroundColor Cyan "Restoring assembly version files..."
+			git restore *version.txt 2>&1 > $null
+			git restore *Assembly*.cs 2>&1 > $null
 		}
 		
 		"script" {
