@@ -1,12 +1,12 @@
 ﻿param(
     [Parameter(Mandatory=$true,Position=0)]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("status", "pull", "branch", "fetch", "branches", "checkout", "clean", "script")]
+    [ValidateSet("status", "pull", "branch", "fetch", "update-remote", "branches", "checkout", "clean", "script")]
     [String]$Action,
 	
 	[Alias('b')]
 	[Parameter(Mandatory=$false)]
-	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc", "feature/abilson/imasis_migration")]
+	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc")]
 	[String]$Branch = "",
 	
 	[Alias('s')]
@@ -74,7 +74,11 @@ foreach ($directory in $directories) {
 			if ($fetch -and $fetch[1]) {
 				$regex.Matches($fetch[1]) | % { Write-Host -ForegroundColor Cyan $_.Value }
 			}
+		}
 		
+		"update-remote" {
+		
+			git remote update origin --prune
 		}
 		
 		"pull" {
@@ -124,7 +128,7 @@ foreach ($directory in $directories) {
 		"clean" {
 		
 			# removes all untracked files and directories (not counting ignored files and directories)
-			Write-Host -ForegroundColor Cyan "Removing untracked files and directories (not counting ignored files and directories..."
+			Write-Host -ForegroundColor Cyan "Removing untracked files and directories (not counting ignored files and directories)"
 			$cleaned = git clean -df
 			$cleaned | % { Write-Host -ForegroundColor DarkCyan $_ }
 			
