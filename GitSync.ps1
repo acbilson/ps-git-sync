@@ -1,7 +1,7 @@
 ﻿param(
     [Parameter(Mandatory=$true,Position=0)]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("status", "pull", "branch", "fetch", "update-remote", "branches", "checkout", "clean", "script")]
+    [ValidateSet("status", "pull", "branch", "fetch", "update-remote", "branches", "checkout", "clean", "script", "stash-list")]
     [String]$Action,
 	
 	[Alias('b')]
@@ -79,6 +79,11 @@ foreach ($directory in $directories) {
 		"update-remote" {
 		
 			git remote update origin --prune
+		}
+		
+		"stash-list" {
+		
+			git stash list
 		}
 		
 		"pull" {
