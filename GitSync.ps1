@@ -1,7 +1,7 @@
 ﻿param(
     [Parameter(Mandatory=$true,Position=0)]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("status", "pull", "branch", "fetch", "update-remote", "branches", "checkout", "clean", "script", "stash-list")]
+    [ValidateSet("status", "pull", "branch", "fetch", "update-remote", "branches", "checkout", "clean", "script", "stash-list", "branches-detailed")]
     [String]$Action,
 	
 	[Alias('b')]
@@ -128,6 +128,31 @@ foreach ($directory in $directories) {
 			$ahmedBranches   | % { Write-Host -ForegroundColor Blue $_ }
 			$kasardaBranches | % { Write-Host -ForegroundColor Magenta $_ }
 			$cocBranches     | % { Write-Host -ForegroundColor White $_ }
+		}
+		
+		"branches-detailed" {
+		
+			$allBranches = git branch -r --sort=committerdate
+			$myBranches =      $allBranches | sls '[Ff]eature\/abilson'
+			$koskyBranches =   $allBranches | sls '[Ff]eature\/kosky'
+			$ahmedBranches =   $allBranches | sls '[Ff]eature\/KA\/'
+			$kasardaBranches = $allBranches | sls '[Ff]eature\/kasarda'
+			$cocBranches =     $allBranches | sls 'coc' | sls -NotMatch 'abilson|kosky|kasarda|\/KA\/' 
+			
+			if ($myBranches.Length -gt 0) { Print-SubHeader -Header "My Branches" }
+			$myBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			
+			if ($koskyBranches.Length -gt 0) { Print-SubHeader -Header "Kosky Branches" }
+			$koskyBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			
+			if ($ahmedBranches.Length -gt 0) { Print-SubHeader -Header "Ahmed Branches" }
+			$ahmedBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			
+			if ($kasardaBranches.Length -gt 0) { Print-SubHeader -Header "Kasarda Branches" }
+			$kasardaBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			
+			if ($cocBranches.Length -gt 0) { Print-SubHeader -Header "CoC Branches" }
+			$cocBranches | % { Print-Branch -BranchName $_.Line.Trim() }
 		}
 		
 		"clean" {

@@ -28,3 +28,33 @@ param(
 	# Write right buffer
 	Write-Host -ForegroundColor DarkGray $('#' * $rightBufferWidth)
 }
+
+function Print-SubHeader {
+param(
+[string]$Header
+)
+
+	$underline = @('-' * $Header.Length)
+	
+	Write-Host
+	Write-Host -ForegroundColor DarkGreen " "$Header
+	Write-Host -ForegroundColor DarkGray " "$underline
+}
+
+function Print-Branch {
+
+param(
+[string]$BranchName
+)
+
+	$dayWidth = 12
+
+	$lastCommit = git log -n 1 --no-merges --format="%cr|%h" $BranchName
+	$day = $lastCommit.Split('|')[0]
+	$commit = $lastCommit.Split('|')[1]
+	
+	Write-Host -ForegroundColor Yellow -NoNewLine ([string]::Format(" {0}{1}", $day, $(' ' * [math]::abs($dayWidth - $day.Length))))
+	
+	Write-Host -ForegroundColor DarkGray -NoNewLine " "$commit" "
+	Write-Host -ForegroundColor Cyan $BranchName
+}
