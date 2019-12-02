@@ -6,7 +6,7 @@
 	
 	[Alias('b')]
 	[Parameter(Mandatory=$false)]
-	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc")]
+	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc", "feature/KA/Coc_20191214")]
 	[String]$Branch = "",
 	
 	[Alias('s')]
