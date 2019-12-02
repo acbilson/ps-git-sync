@@ -58,6 +58,17 @@ switch ($Action) {
             Write-Host -ForegroundColor Red "Was unable to find nunit3-console.exe. Please copy entire folder to AIM root directory or update NUnitConsoleExe parameter"
             return
          }
+		 
+		$build = Read-Host -Prompt "If you have not built both RadImasis and RadPortal projects, not all tests will run. Would you like to build first? (y/n)"
+		
+		if ($build) {
+		
+			Print-Header "Starting RadImasis Debug Build..."
+            msbuild C:\AIM\Trunk\Products\RAD\RadImasis\RadImasis.sln /m /t:Build /p:Configuration=Debug -verbosity:minimal -clp:ErrorsOnly 
+		
+			Print-Header "Starting RadPortal Debug Build..."
+			msbuild C:\AIM\Trunk\Products\RAD\RadPortal\RadPortal.sln /m /t:Build /p:Configuration=Debug -verbosity:minimal -clp:ErrorsOnly
+		}
 		
 		do {
 			$retry = $false
