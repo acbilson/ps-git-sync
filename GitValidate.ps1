@@ -59,9 +59,10 @@ switch ($Action) {
             return
          }
 		 
-		$build = Read-Host -Prompt "If you have not built both RadImasis and RadPortal projects, not all tests will run. Would you like to build first? (y/n)"
+		Write-Host "If you have not built both RadImasis and RadPortal projects, not all tests will run."
+		$build = Read-Host -Prompt "Would you like to build first? (y/n)"
 		
-		if ($build) {
+		if (@('y').Contains($build)) {
 		
 			Print-Header "Starting RadImasis Debug Build..."
             msbuild C:\AIM\Trunk\Products\RAD\RadImasis\RadImasis.sln /m /t:Build /p:Configuration=Debug -verbosity:minimal -clp:ErrorsOnly 
