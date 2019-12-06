@@ -6,7 +6,7 @@
 	
 	[Alias('b')]
 	[Parameter(Mandatory=$false)]
-	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc", "feature/KA/Coc_20191214")]
+	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc")]
 	[String]$Branch = "",
 	
 	[Alias('s')]
@@ -18,7 +18,11 @@
 	[string]$BaseDirectory="C:\AIM\Trunk\Products\RAD",
 	
 	[Parameter(Mandatory=$false)]
-	[switch]$hard
+	[switch]$hard,
+	
+	[Parameter(Mandatory=$false)]
+	[ValidateSet("today", "two-weeks", "all")]
+	[string]$BranchHistory = "all"
 )
 
 $executionDirectory = [System.IO.Path]::GetDirectoryName($myInvocation.MyCommand.Definition)
@@ -140,19 +144,19 @@ foreach ($directory in $directories) {
 			$cocBranches =     $allBranches | sls 'coc' | sls -NotMatch 'abilson|kosky|kasarda|\/KA\/' 
 			
 			if ($myBranches.Length -gt 0) { Print-SubHeader -Header "My Branches" }
-			$myBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			$myBranches | % { Print-Branch -BranchName $_.Line.Trim() -BranchHistory $BranchHistory }
 			
 			if ($koskyBranches.Length -gt 0) { Print-SubHeader -Header "Kosky Branches" }
-			$koskyBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			$koskyBranches | % { Print-Branch -BranchName $_.Line.Trim() -BranchHistory $BranchHistory }
 			
 			if ($ahmedBranches.Length -gt 0) { Print-SubHeader -Header "Ahmed Branches" }
-			$ahmedBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			$ahmedBranches | % { Print-Branch -BranchName $_.Line.Trim() -BranchHistory $BranchHistory }
 			
 			if ($kasardaBranches.Length -gt 0) { Print-SubHeader -Header "Kasarda Branches" }
-			$kasardaBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			$kasardaBranches | % { Print-Branch -BranchName $_.Line.Trim() -BranchHistory $BranchHistory }
 			
 			if ($cocBranches.Length -gt 0) { Print-SubHeader -Header "CoC Branches" }
-			$cocBranches | % { Print-Branch -BranchName $_.Line.Trim() }
+			$cocBranches | % { Print-Branch -BranchName $_.Line.Trim() -BranchHistory $BranchHistory }
 		}
 		
 		"clean" {

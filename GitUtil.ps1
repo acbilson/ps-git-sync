@@ -44,7 +44,8 @@ param(
 function Print-Branch {
 
 param(
-[string]$BranchName
+[string]$BranchName,
+[string]$BranchHistory
 )
 
 	$dayWidth = 12
@@ -53,8 +54,37 @@ param(
 	$day = $lastCommit.Split('|')[0]
 	$commit = $lastCommit.Split('|')[1]
 	
-	Write-Host -ForegroundColor Yellow -NoNewLine ([string]::Format(" {0}{1}", $day, $(' ' * [math]::abs($dayWidth - $day.Length))))
+	switch ($BranchHistory) {
 	
-	Write-Host -ForegroundColor DarkGray -NoNewLine " "$commit" "
-	Write-Host -ForegroundColor Cyan $BranchName
+		"all" {
+		
+			Write-Host -ForegroundColor Yellow -NoNewLine ([string]::Format(" {0}{1}", $day, $(' ' * [math]::abs($dayWidth - $day.Length))))
+		
+			Write-Host -ForegroundColor DarkGray -NoNewLine " "$commit" "
+			Write-Host -ForegroundColor Cyan $BranchName
+		}
+		
+		"two-weeks" {
+		
+			if ($day.Contains("hours ago") -or $day.Contains("days ago")) {
+		
+				Write-Host -ForegroundColor Yellow -NoNewLine ([string]::Format(" {0}{1}", $day, $(' ' * [math]::abs($dayWidth - $day.Length))))
+			
+				Write-Host -ForegroundColor DarkGray -NoNewLine " "$commit" "
+				Write-Host -ForegroundColor Cyan $BranchName
+			}
+		}
+		
+		"today" {
+		
+			if ($day.Contains("hours ago")) {
+		
+				Write-Host -ForegroundColor Yellow -NoNewLine ([string]::Format(" {0}{1}", $day, $(' ' * [math]::abs($dayWidth - $day.Length))))
+			
+				Write-Host -ForegroundColor DarkGray -NoNewLine " "$commit" "
+				Write-Host -ForegroundColor Cyan $BranchName
+			}
+		}
+	
+	}	
 }
