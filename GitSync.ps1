@@ -1,12 +1,23 @@
 ﻿param(
     [Parameter(Mandatory=$true,Position=0)]
     [ValidateNotNullOrEmpty()]
-    [ValidateSet("status", "pull", "branch", "fetch", "update-remote", "branches", "checkout", "clean", "script", "stash-list", "branches-detailed")]
+    [ValidateSet(
+		"branch",
+		"branches",
+		"branches-detailed",
+		"checkout",
+		"clean",
+		"fetch",
+		"pull",
+		"script",
+		"status",
+		"update-remote"
+		)]
     [String]$Action,
 	
 	[Alias('b')]
 	[Parameter(Mandatory=$false)]
-	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc")]
+	[ValidateSet("master", "feature/coc_psr_13645", "feature/spr_coc", "feature/coc_psr_13645_R20191214")]
 	[String]$Branch = "",
 	
 	[Alias('s')]
@@ -84,12 +95,7 @@ foreach ($directory in $directories) {
 		
 			git remote update origin --prune
 		}
-		
-		"stash-list" {
-		
-			git stash list
-		}
-		
+
 		"pull" {
 		
 			$currentBranch = git branch --show-current
