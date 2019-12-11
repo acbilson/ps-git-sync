@@ -40,7 +40,7 @@ The following code snippets illustrate each of the available actions that can be
 
 Displays the local branches for each repository. Useful to see what branch you're on for every branch and find where you may not have checked out the right branch.
 
-![Branch Action PNG](https://github.com/acbilson/ps-git-sync/blob/master/images/action-branch.png)
+![Branch Action PNG](https://github.com/acbilson/ps-git-sync/blob/aim/images/action-branch.png)
 
 ## Branches
 
@@ -70,7 +70,7 @@ This script cleans up the extra stuff created by the build process that we canno
 
 Be aware, the underlying git command runs clean with the -df flags.
 
-![Clean Action PNG](https://github.com/acbilson/ps-git-sync/blob/master/images/action-clean.png)
+![Clean Action PNG](https://github.com/acbilson/ps-git-sync/blob/aim/images/action-clean.png)
 
 ## Fetch
 
