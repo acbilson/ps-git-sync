@@ -40,7 +40,7 @@ The following code snippets illustrate each of the available actions that can be
 
 Displays the local branches for each repository. Useful to see what branch you're on for every branch and find where you may not have checked out the right branch.
 
-![Branch Action](https://github.com/acbilson/ps-git-sync/blob/master/images/action-branch.png)
+![Branch Action PNG](https://github.com/acbilson/ps-git-sync/blob/master/images/action-branch.png)
 
 ## Branches
 
@@ -69,6 +69,8 @@ Checks out the specified branch across every repo. This is most useful to synchr
 This script cleans up the extra stuff created by the build process that we cannot hide with .gitignore or that's related to spark auto-generated files, and restores assembly version files that are part of the build process but only generate merge conflicts (have no dev value).
 
 Be aware, the underlying git command runs clean with the -df flags.
+
+![Clean Action PNG](https://github.com/acbilson/ps-git-sync/blob/master/images/action-clean.png)
 
 ## Fetch
 
